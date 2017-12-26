@@ -40,11 +40,11 @@ end
 
 function hausdorff_map(
     range::Int,
-    weightType::DistanceWeight = NormalWeight()
+    weightType::DistanceWeight = Log2Weight()
     )
     w = weight(range, weightType)
 
-    sequence = corput(range)
+    sequence = total_order(range)
 
     M = zeros(Float64, range/2 + 1, range/2 + 1)
     for j in 0:Int(range/2)
@@ -61,7 +61,13 @@ function tracePlotType(
     z
     )
     trace = surface(z=z)
-    layout = Layout(title="Haussdorf distance surface map",autosize=false, width=500, height=500, margin=attr(l=0, r=0, b=0, t=65))
+    layout = Layout(
+        title = "Haussdorf distance surface map",
+        autosize = false,
+        width = 500,
+        height = 500,
+        margin = attr(l = 0, r = 0, b = 0, t = 65)
+        )
     return trace, layout
 end
 
@@ -70,7 +76,13 @@ function tracePlotType(
     z
     )
     trace = heatmap(z=z)
-    layout = layout = Layout(title="Haussdorf distance heat map",autosize=false, width=500, height=500, margin=attr(l=0, r=0, b=0, t=65))
+    layout = Layout(
+        title = "Haussdorf distance heat map",
+        autosize = false,
+        width = 500,
+        height = 500,
+        margin = attr(l = 0, r = 0, b = 0, t = 65)
+        )
     return trace, layout
 end
 
@@ -80,7 +92,7 @@ function hausdorff_plot(
     plotType::PlotType = HeatMapPlot()
     )
     M = hausdorff_map(range, weightType)
-    z = [M[i,:] for i in 1:size(M,1)]
+    z = [M[i, :] for i in 1:size(M, 1)]
     trace, layout = tracePlotType(plotType, z)
     plot(trace, layout)
 end
