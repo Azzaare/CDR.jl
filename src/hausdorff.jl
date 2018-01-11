@@ -41,7 +41,8 @@ end
 function hausdorff_map(
     range::Int,
     weightType::DistanceWeight = Log2Weight();
-    order::TotalOrderAlgorithm = CorputSequence()
+    order::TotalOrderAlgorithm = CorputSequence(),
+    neighbors::Number = 0
     )
     w = weight(range, weightType)
 
@@ -54,7 +55,7 @@ function hausdorff_map(
             M[i + 1, j + 1] = hausdorff_distance(path) / w(i, j)
         end
     end
-    return M
+    return neighbors > 0 ? neighbors_map(M; d = neighbors) : M
 end
 
 function tracePlotType(
@@ -91,9 +92,10 @@ function hausdorff_plot(
     range::Int;
     weightType::DistanceWeight = Log2Weight(),
     plotType::PlotType = HeatMapPlot(),
-    order::TotalOrderAlgorithm = CorputSequence()
+    order::TotalOrderAlgorithm = CorputSequence(),
+    neighbors::Number = 0
     )
-    M = hausdorff_map(range, weightType; order = order)
+    M = hausdorff_map(range, weightType; order = order, neighbors = neighbors)
     z = [M[i, :] for i in 1:size(M, 1)]
     trace, layout = tracePlotType(plotType, z)
     plot(trace, layout)
@@ -102,7 +104,8 @@ end
 function hausdorff_plot(
     M::Matrix;
     plotType::PlotType = HeatMapPlot(),
-    order::TotalOrderAlgorithm = CorputSequence()
+    order::TotalOrderAlgorithm = CorputSequence(),
+    neighbors::Number = 0
     )
     z = [M[i, :] for i in 1:size(M, 1)]
     trace, layout = tracePlotType(plotType, z)
@@ -112,8 +115,9 @@ end
 function hausdorff_describe(
     range::Int,
     weightType::DistanceWeight = Log2Weight();
-    order::TotalOrderAlgorithm = CorputSequence()
+    order::TotalOrderAlgorithm = CorputSequence(),
+    neighbors::Number = 0
     )
     #describe(hausdorff_map(range, weightType))
-    describe_diag(hausdorff_map(range, weightType; order = order))
+    describe_diag(hausdorff_map(range, weightType; order = order, neighbors = neighbors))
 end
