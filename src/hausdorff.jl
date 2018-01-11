@@ -40,11 +40,12 @@ end
 
 function hausdorff_map(
     range::Int,
-    weightType::DistanceWeight = Log2Weight()
+    weightType::DistanceWeight = Log2Weight();
+    order::TotalOrderAlgorithm = CorputSequence()
     )
     w = weight(range, weightType)
 
-    sequence = total_order(range)
+    sequence = total_order(range, order)
 
     M = zeros(Float64, range/2 + 1, range/2 + 1)
     for j in 0:Int(range/2)
@@ -89,32 +90,20 @@ end
 function hausdorff_plot(
     range::Int;
     weightType::DistanceWeight = Log2Weight(),
-    plotType::PlotType = HeatMapPlot()
+    plotType::PlotType = HeatMapPlot(),
+    order::TotalOrderAlgorithm = CorputSequence()
     )
-    M = hausdorff_map(range, weightType)
+    M = hausdorff_map(range, weightType; order = order)
     z = [M[i, :] for i in 1:size(M, 1)]
     trace, layout = tracePlotType(plotType, z)
     plot(trace, layout)
 end
 
-# Based on the describe function of DataFrames.jl
-function describe(M::Matrix{T}) where T <: Number
-    V = sort!(vec(M))
-    str  = "Summary Stats:\n"
-    str *= "Mean:           $(mean(V))\n"
-    str *= "Minimum:        $(V[1])\n"
-    str *= "1st Quartile:   $(quantile(V, 0.25, sorted = true))\n"
-    str *= "Median:         $(median(V))\n"
-    str *= "3rd Quartile:   $(quantile(V, 0.75, sorted = true))\n"
-    str *= "Maximum:        $(V[end])\n"
-    str *= "Length:         $(length(V))\n"
-    str *= "Type:           $T\n"
-    print(str)
-end
-
 function hausdorff_describe(
     range::Int,
-    weightType::DistanceWeight = Log2Weight()
+    weightType::DistanceWeight = Log2Weight();
+    order::TotalOrderAlgorithm = CorputSequence()
     )
-    describe(hausdorff_map(range, weightType))
+    #describe(hausdorff_map(range, weightType))
+    describe_diag(hausdorff_map(range, weightType; order = order))
 end
