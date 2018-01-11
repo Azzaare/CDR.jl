@@ -99,6 +99,16 @@ function hausdorff_plot(
     plot(trace, layout)
 end
 
+function hausdorff_plot(
+    M::Matrix;
+    plotType::PlotType = HeatMapPlot(),
+    order::TotalOrderAlgorithm = CorputSequence()
+    )
+    z = [M[i, :] for i in 1:size(M, 1)]
+    trace, layout = tracePlotType(plotType, z)
+    plot(trace, layout)
+end
+
 function hausdorff_describe(
     range::Int,
     weightType::DistanceWeight = Log2Weight();
