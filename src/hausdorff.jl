@@ -96,3 +96,25 @@ function hausdorff_plot(
     trace, layout = tracePlotType(plotType, z)
     plot(trace, layout)
 end
+
+# Based on the describe function of DataFrames.jl
+function describe(M::Matrix{T}) where T <: Number
+    V = sort!(vec(M))
+    str  = "Summary Stats:\n"
+    str *= "Mean:           $(mean(V))\n"
+    str *= "Minimum:        $(V[1])\n"
+    str *= "1st Quartile:   $(quantile(V, 0.25, sorted = true))\n"
+    str *= "Median:         $(median(V))\n"
+    str *= "3rd Quartile:   $(quantile(V, 0.75, sorted = true))\n"
+    str *= "Maximum:        $(V[end])\n"
+    str *= "Length:         $(length(V))\n"
+    str *= "Type:           $T\n"
+    print(str)
+end
+
+function hausdorff_describe(
+    range::Int,
+    weightType::DistanceWeight = Log2Weight()
+    )
+    describe(hausdorff_map(range, weightType))
+end
