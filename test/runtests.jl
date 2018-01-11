@@ -1,5 +1,6 @@
 using CDR
 using Base.Test
 
-# write your own tests here
-@test 1 == 2
+# TODO: write basic tests
+
+hausdorff_describe(1000)

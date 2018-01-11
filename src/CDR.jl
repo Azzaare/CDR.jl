@@ -8,7 +8,7 @@ TotalOrderAlgorithm, CorputSequence,
 Dimension, Dim2, Dim3,
 PlotType, SurfacePlot, HeatMapPlot,
 DistanceWeight, NormalWeight, Log2Weight,
-hausdorff_map, hausdorff_plot
+hausdorff_map, hausdorff_plot, hausdorff_describe
 
 include("order.jl")
 include("path.jl")
