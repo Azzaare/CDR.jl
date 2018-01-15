@@ -50,7 +50,7 @@ function hausdorff_map(
     M = zeros(Float64, range/2 + 1, range/2 + 1)
     for j in 0:Int(range/2)
         for i in 0:Int(range/2)
-            path = cdr(i, j, [sequence])
+            path = cdr(i, j, sequence)
             M[i + 1, j + 1] = hausdorff_distance(path) / w(i, j)
         end
     end

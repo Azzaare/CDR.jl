@@ -1,6 +1,8 @@
 using CDR
 using Base.Test
 
+#Pkg.test("CDR")
+
 # TODO: write basic tests
 
 # hausdorff_describe(10)
